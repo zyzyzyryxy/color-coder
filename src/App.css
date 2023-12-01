@@ -15,7 +15,7 @@
   flex-direction: row;
 }
 
-.Col {
+.Cell {
   border-width: 1px;
   border-style: solid;
   border-color: black;
