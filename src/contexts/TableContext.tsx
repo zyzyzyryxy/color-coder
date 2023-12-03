@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useReducer } from 'react';
 import type { Property } from 'csstype';
+import { copyAndUpdate } from '../utils';
 
 type TableType = number[];
 
@@ -11,16 +12,19 @@ type TableContextType = {
 	colors: Color[];
 	setColors: (newColors: Color[]) => void;
 	getCodeForIndex: (idx: number) => string;
+	setCurrentColorIndex: (idx: number | null) => void;
+	selectedColorIndex: number | null;
 };
 
 type TableStateType = {
 	table: TableType;
 	height: number;
 	colors: Color[];
+	selectedColorIndex: number | null;
 };
 
 type TableAction = {
-	type: 'increment';
+	type: 'updateCell';
 	rowIndex: number;
 	columnIndex: number;
 } | {
@@ -30,6 +34,9 @@ type TableAction = {
 	type: 'updateSize';
 	width: number;
 	height: number;
+} | {
+	type: 'setSelectedColorIndex';
+	colorIndex: number | null;
 };
 
 type TableContextProviderProps = {
@@ -44,41 +51,52 @@ const TableContext = createContext<TableContextType>({
 	changeCell: () => { },
 	colors: [],
 	setColors: () => { },
-	getCodeForIndex: () => ''
+	getCodeForIndex: () => '',
+	setCurrentColorIndex: () => {},
+	selectedColorIndex: null
 });
-
-function copyAndUpdate<T>(tab: T[], idx: number, val: T) {
-	return tab.map((v, i) => i === idx ? val : v);
-}
 
 function createTable(width: number, height: number): TableType {
 	return new Array(width * height).fill(0);
 }
 
-const tableReducer = function (state: TableStateType, action: TableAction) {
+const tableReducer = function (state: TableStateType, action: TableAction): TableStateType {
 	switch (action.type) {
-		case 'increment':
+		case 'updateCell':
 			const idx = action.columnIndex * state.height + action.rowIndex;
+			const newColorIdx = state.selectedColorIndex != null
+				? state.selectedColorIndex
+				: (state.table[idx] + 1) % state.colors.length;
 			return {
 				...state,
 				table: copyAndUpdate(
 					state.table,
 					idx,
-					(state.table[idx] + 1) % state.colors.length
+					newColorIdx
 				)
 			};
 		case 'updateColors':
-			if (state.colors.length <= action.colors.length)
-				return { ...state, colors: action.colors };
 			return {
 				...state,
 				colors: action.colors,
-				table: state.table.map(v => v >= action.colors.length ? 0 : v)
+				table: (state.colors.length <= action.colors.length)
+					? state.table
+					: state.table.map(v => v >= action.colors.length ? 0 : v),
+				selectedColorIndex: state.selectedColorIndex !> action.colors.length
+					? null
+					: state.selectedColorIndex
 			};
 		case 'updateSize':
-			return { ...state, width: action.width, table: createTable(action.width, action.height) };
-		default:
-			return state;
+			return {
+				...state,
+				height: action.height,
+				table: createTable(action.width, action.height)
+			};
+		case 'setSelectedColorIndex':
+			return {
+				...state,
+				selectedColorIndex: action.colorIndex
+			};
 	}
 }
 
@@ -86,7 +104,8 @@ export const TableContextProvider = React.memo<TableContextProviderProps>(({ row
 	const [state, dispatch] = useReducer<React.Reducer<TableStateType, TableAction>, undefined>(tableReducer, undefined, () => ({
 		table: createTable(columns.length, rows.length),
 		height: rows.length,
-		colors: initialColors
+		colors: initialColors,
+		selectedColorIndex: null
 	}));
 
 	useEffect(() => {
@@ -103,7 +122,7 @@ export const TableContextProvider = React.memo<TableContextProviderProps>(({ row
 	);
 
 	const changeCell = useCallback((rowIndex: number, columnIndex: number) => {
-		dispatch({ type: 'increment', rowIndex, columnIndex });
+		dispatch({ type: 'updateCell', rowIndex, columnIndex });
 	}, []);
 
 	const getCodeForIndex = useCallback((cIdx: number) => {
@@ -117,13 +136,19 @@ export const TableContextProvider = React.memo<TableContextProviderProps>(({ row
 		}, []).join(' ');
 	}, [state.table, state.height, columns, rows]);
 
-	const contextValue = useMemo(() => ({
+	const setCurrentColorIndex = useCallback((colorIndex: number | null) => {
+		dispatch({type: 'setSelectedColorIndex', colorIndex});
+	}, []);
+
+	const contextValue = useMemo<TableContextType>(() => ({
 		getCell,
 		changeCell,
 		colors: state.colors,
 		setColors,
-		getCodeForIndex
-	}), [getCell, changeCell, state.colors, getCodeForIndex, setColors]);
+		getCodeForIndex,
+		setCurrentColorIndex,
+		selectedColorIndex: state.selectedColorIndex
+	}), [getCell, changeCell, state.colors, getCodeForIndex, setColors, setCurrentColorIndex, state.selectedColorIndex]);
 
 	return (
 		<TableContext.Provider value={contextValue}>{children}</TableContext.Provider>

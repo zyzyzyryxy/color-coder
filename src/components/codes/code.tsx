@@ -7,6 +7,6 @@ type CodeProps = {
 
 export function Code({color, code}: CodeProps) {
 	return (
-		<div style={{color}}>{code}</div>
+		<div className='Code' style={{color}}>{code}</div>
 	);
 }
