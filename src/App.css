@@ -13,10 +13,14 @@
   margin: 2vw;
 }
 
-.LeftPane, .RightPane, .Cell, .ColorPicker, .ColorBox {
+.LeftPane, .RightPane, .Cell, .ColorPicker, .ColorBox, .ColorEditButton {
   border-width: 1px;
   border-style: solid;
   border-color: black;
+}
+
+.LeftPane, .RightPane, .ColorPicker, .ColorBox, .ColorEditButton {
+  border-radius: 0.5vw;
 }
 
 .LeftPane {
@@ -63,4 +67,23 @@
 .ColorBox {
   height: 3vw;
   margin-bottom: 1.5vw;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.ColorBox.Multicolor {
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.ColorEditButton {
+  width: 2.5vw;
+  height: 2.5vw;
+  background-color: white;
+}
+
+.MulticolorPart {
+  flex: 1;
+  height: 100%;
 }

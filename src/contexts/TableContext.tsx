@@ -3,18 +3,20 @@ import type { Property } from 'csstype';
 
 type TableType = number[];
 
+export type Color = Property.BackgroundColor;
+
 type TableContextType = {
 	getCell: (row: number, column: number) => number;
 	changeCell: (row: number, column: number) => void;
-	colors: Property.BackgroundColor[];
-	setColors: (newColors: Property.BackgroundColor[]) => void;
+	colors: Color[];
+	setColors: (newColors: Color[]) => void;
 	getCodeForIndex: (idx: number) => string;
 };
 
 type TableStateType = {
 	table: TableType;
 	height: number;
-	colors: Property.BackgroundColor[];
+	colors: Color[];
 };
 
 type TableAction = {
@@ -23,7 +25,7 @@ type TableAction = {
 	columnIndex: number;
 } | {
 	type: 'updateColors';
-	colors: Property.BackgroundColor[];
+	colors: Color[];
 } | {
 	type: 'updateSize';
 	width: number;
@@ -33,7 +35,7 @@ type TableAction = {
 type TableContextProviderProps = {
 	rows: string[];
 	columns: string[];
-	initialColors: Property.BackgroundColor[];
+	initialColors: Color[];
 	children: React.ReactNode;
 };
 
@@ -91,7 +93,7 @@ export const TableContextProvider = React.memo<TableContextProviderProps>(({ row
 		dispatch({ type: 'updateSize', width: columns.length, height: rows.length });
 	}, [rows.length, columns.length]);
 
-	const setColors = useCallback((colors: Property.BackgroundColor[]) => {
+	const setColors = useCallback((colors: Color[]) => {
 		dispatch({ type: 'updateColors', colors });
 	}, []);
 

@@ -1,11 +1,11 @@
-import type {Property} from 'csstype';
+import { Color } from "../../../contexts/TableContext";
 
 type BaseCellProps = {
-	color: Property.BackgroundColor,
+	color: Color,
 	onClick: () => void;
 	label?: never;
 } | {
-	color: Property.BackgroundColor,
+	color: Color,
 	onClick?: never;
 	label: string;
 };
