@@ -1,5 +1,5 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useReducer } from "react";
-import type {Property} from 'csstype';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useReducer } from 'react';
+import type { Property } from 'csstype';
 
 type TableType = number[];
 

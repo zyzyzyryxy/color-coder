@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { TableContextProvider } from './TableContext';
+import { TableContextProvider } from './contexts/TableContext';
 import { Codes } from './components/Codes';
 import { Table } from './components/Table';
 
