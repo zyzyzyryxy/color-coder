@@ -1,4 +1,31 @@
 .App {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  background: fixed left/128px url(./logo.svg) repeat;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+}
+
+.LeftPane, .RightPane {
+  background-color: rgba(0,0,0,0.2);
+  margin: 2vw;
+}
+
+.LeftPane, .RightPane, .Cell, .ColorPicker, .ColorBox {
+  border-width: 1px;
+  border-style: solid;
+  border-color: black;
+}
+
+.LeftPane {
+  flex: 2;
+}
+
+.RightPane {
+  flex: 1;
+  margin-left: 0;
 }
 
 .Codes {
@@ -8,17 +35,32 @@
 .Table {
   display: flex;
   flex-direction: column;
+  margin: 2vw;
+  width: calc(100% - 4vw);
 }
 
 .Row {
   display: flex;
   flex-direction: row;
+  flex: 1;
 }
 
 .Cell {
-  border-width: 1px;
-  border-style: solid;
-  border-color: black;
-  width: 40px;
-  height: 40px;
+  flex: 1;
+  aspect-ratio: 1 / 1;
+  text-align: center;
+  font-size: 2vw;
+}
+
+.ColorPicker {
+  display: flex;
+  flex-direction: column;
+  margin: 2vw;
+  padding: 2vw 2vw 0 2vw;
+  background-color: white;
+}
+
+.ColorBox {
+  height: 3vw;
+  margin-bottom: 1.5vw;
 }

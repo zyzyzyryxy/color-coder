@@ -1,5 +1,4 @@
-import React from 'react';
-import { BaseCell } from './BaseCell';
+import { BaseCell } from './baseCell';
 
 type HeaderCellProps = {
 	label: string;

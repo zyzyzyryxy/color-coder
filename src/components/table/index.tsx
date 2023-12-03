@@ -1,6 +1,5 @@
-import React from 'react';
-import { HeaderRow } from './HeaderRow';
-import { Row } from './Row';
+import { HeaderRow } from './headerRow';
+import { Row } from './row';
 
 type TableProps = {
 	rows: string[];

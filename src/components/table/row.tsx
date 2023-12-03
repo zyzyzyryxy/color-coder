@@ -1,6 +1,5 @@
-import React from 'react';
-import { ColorCell } from "./cells/ColorCell";
-import { HeaderCell } from "./cells/HeaderCell";
+import { ColorCell } from "./cells/colorCell";
+import { HeaderCell } from "./cells/headerCell";
 
 type RowProps = {
 	row: string;

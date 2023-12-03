@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
-import { useTableContext } from '../../contexts/TableContext';
-import { BaseCell } from './BaseCell';
+import { useCallback } from 'react';
+import { useTableContext } from '../../../contexts/TableContext';
+import { BaseCell } from './baseCell';
 
 type ColorCellProps = {
 	rIdx: number;

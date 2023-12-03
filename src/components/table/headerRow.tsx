@@ -1,6 +1,5 @@
-import React from 'react';
-import { FillerCell } from "./cells/FillerCell";
-import { HeaderCell } from "./cells/HeaderCell";
+import { FillerCell } from "./cells/fillerCell";
+import { HeaderCell } from "./cells/headerCell";
 
 type RowProps = {
 	columns: string[];

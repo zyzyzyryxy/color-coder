@@ -1,6 +1,5 @@
-import React from 'react';
-import { useTableContext } from '../contexts/TableContext';
-import { Code } from './Code';
+import { useTableContext } from '../../contexts/TableContext';
+import { Code } from './code';
 
 export function Codes() {
 	const { colors, getCodeForIndex } = useTableContext();

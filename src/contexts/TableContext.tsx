@@ -7,6 +7,7 @@ type TableContextType = {
 	getCell: (row: number, column: number) => number;
 	changeCell: (row: number, column: number) => void;
 	colors: Property.BackgroundColor[];
+	setColors: (newColors: Property.BackgroundColor[]) => void;
 	getCodeForIndex: (idx: number) => string;
 };
 
@@ -32,7 +33,7 @@ type TableAction = {
 type TableContextProviderProps = {
 	rows: string[];
 	columns: string[];
-	colors: Property.BackgroundColor[];
+	initialColors: Property.BackgroundColor[];
 	children: React.ReactNode;
 };
 
@@ -40,6 +41,7 @@ const TableContext = createContext<TableContextType>({
 	getCell: () => 0,
 	changeCell: () => { },
 	colors: [],
+	setColors: () => { },
 	getCodeForIndex: () => ''
 });
 
@@ -78,20 +80,20 @@ const tableReducer = function (state: TableStateType, action: TableAction) {
 	}
 }
 
-export const TableContextProvider = React.memo<TableContextProviderProps>(({ rows, columns, colors, children }) => {
+export const TableContextProvider = React.memo<TableContextProviderProps>(({ rows, columns, initialColors, children }) => {
 	const [state, dispatch] = useReducer<React.Reducer<TableStateType, TableAction>, undefined>(tableReducer, undefined, () => ({
 		table: createTable(columns.length, rows.length),
 		height: rows.length,
-		colors: colors
+		colors: initialColors
 	}));
 
 	useEffect(() => {
 		dispatch({ type: 'updateSize', width: columns.length, height: rows.length });
 	}, [rows.length, columns.length]);
 
-	useEffect(() => {
+	const setColors = useCallback((colors: Property.BackgroundColor[]) => {
 		dispatch({ type: 'updateColors', colors });
-	}, [colors]);
+	}, []);
 
 	const getCell = useCallback((rowIndex: number, columnIndex: number) =>
 		state.table[columnIndex * state.height + rowIndex],
@@ -117,8 +119,9 @@ export const TableContextProvider = React.memo<TableContextProviderProps>(({ row
 		getCell,
 		changeCell,
 		colors: state.colors,
+		setColors,
 		getCodeForIndex
-	}), [getCell, changeCell, state.colors, getCodeForIndex]);
+	}), [getCell, changeCell, state.colors, getCodeForIndex, setColors]);
 
 	return (
 		<TableContext.Provider value={contextValue}>{children}</TableContext.Provider>
