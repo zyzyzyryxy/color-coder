@@ -1,5 +1,5 @@
-import { FillerCell } from "./cells/fillerCell";
-import { HeaderCell } from "./cells/headerCell";
+import { FillerCell } from './cells/fillerCell';
+import { HeaderCell } from './cells/headerCell';
 
 type RowProps = {
 	columns: string[];

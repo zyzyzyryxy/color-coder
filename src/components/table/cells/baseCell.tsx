@@ -1,4 +1,4 @@
-import { Color } from "../../../contexts/TableContext";
+import { Color } from '../../../contexts/TableContext';
 
 type BaseCellProps = {
 	color: Color,

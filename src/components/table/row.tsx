@@ -1,5 +1,5 @@
-import { ColorCell } from "./cells/colorCell";
-import { HeaderCell } from "./cells/headerCell";
+import { ColorCell } from './cells/colorCell';
+import { HeaderCell } from './cells/headerCell';
 
 type RowProps = {
 	row: string;
